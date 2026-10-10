@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор случайных слов</title>
+
+    <!-- PWA мета-теги для iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Генератор слов">
+    <meta name="theme-color" content="#667eea">
+
+    <!-- Иконки для iOS -->
+    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjE4MCIgaGVpZ2h0PSIxODAiIHJ4PSIzMCIgZmlsbD0idXJsKCNncmFkaWVudCkiLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImdyYWRpZW50IiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjNjY3ZWVhIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNzY0YmEyIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHRleHQgeD0iOTAiIHk9IjEwNSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkE8L3RleHQ+PC9zdmc+">
+
+    <!-- Манифест PWA -->
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiR2VuZXJhdG9yIHNsb3YiLCJzaG9ydF9uYW1lIjoiV29yZEdlbiIsInN0YXJ0X3VybCI6Ii8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjNjY3ZWVhIiwidGhlbWVfY29sb3IiOiIjNjY3ZWVhIiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjNhV1IwYUQwaU1UZ3dJaUJvWldsbmFIUTlJakU0TUNJaWRtbGxkMEp2ZUQwaU1DQXdJREU0TUNBMU9EQWlJR1pwYkd3OUltNXZibVVpSUhodGJHNXpQU0pvZEhSd09pOHZkM2QzTG5jekxtOXlaeTh5TURBd0wzTjJaeUkrUEhKbFkzUWdkMmxrZEdnOUlqRTRNQ0lnYUdWcFoyaDBQU0k0TUNJaWNuZzlJak13SWlCbWFXeHNQU0oxY213b0kyZHlZV1JwWlc1MEtTSXZQaXhrWldaelBqeHNhVzVsWVhKSGNtRmthV1Z1ZENCcFpEMGlaM0poWkdsbGJuUWlJSGd4UFNJd0pTSWdlVEU5SWpBalBTSWdlRUk5SWpFd01DVWlJSGt5UFNJeE1EQWxJajQ4YzNSdmNDQnZabVp6WlhROUlqQWxJaUJ6ZEc5d0xXTnZiRzl5UFNJak5qWTNaV1ZoSWk4K1BITjBiM0FnYjJabWMyVjBQU0l4TURBVUV5SWdjM1J2Y0MxamIyeHZjalFpSXprME4ySmhNaUl2UGp3dmJHbHVaV0Z5UjNKaFpHbGxiblErUEM5a1pXWnpQanAwWlhoMElIZzlJamt3SWlCNVBTSXhNRFVpSUdadmJuUXRabUZ0YVd4NVBTSkJjbWxoYkN3Z2MyRnVjeTF6WlhKcFppSWdabTl1ZEMxemFYcGxQU0kwT0NJZ1ptOXVkQzEzWldsbmFIUTlJbUp2YkdRaUlHWnBiR3c5SW5kb2FYUmxJaUIwWlhoMExXRnVZMmh2Y2oxaWJXbGtaR3hsVGo4OWRHVjRkRHc5ZEdWNGREND1QSDAyc3ZaejQ9IiwidHlwZSI6ImltYWdlL3N2Zyt4bWwifV19">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+
+        .app-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            padding-top: 80px;
+            max-width: 500px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            padding-right: 40px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 300;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .install-hint {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+            .install-hint.show {
+                display: block;
+            }
+
+        .category-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .category-btn {
+            padding: 18px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+            .category-btn:active {
+                transform: scale(0.95);
+            }
+
+            .category-btn.active {
+                background: white;
+                color: #667eea;
+                box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            }
+
+        .random-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 30px auto;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+        }
+
+            .random-btn:active {
+                transform: scale(0.95);
+            }
+
+        .output {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 500;
+            color: #333;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+            word-wrap: break-word;
+        }
+
+            .output.highlight {
+                transform: scale(1.05);
+                box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+            }
+
+        .add-words-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+            .add-words-section.show {
+                display: block;
+            }
+
+        .manage-words-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+            .manage-words-section.show {
+                display: block;
+            }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .dropdown {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            background: white;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            min-height: 60px;
+            resize: vertical;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 500;
+            min-height: 44px;
+            transition: all 0.2s ease;
+        }
+
+            .btn:active {
+                transform: scale(0.95);
+            }
+
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #667eea;
+            border: 1px solid #667eea;
+        }
+
+        .stats {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-number {
+            font-size: 20px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .toggle-btn {
+            position: fixed;
+            top: 30px;
+            right: 80px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            font-size: 18px;
+            backdrop-filter: blur(10px);
+            min-width: 44px;
+            min-height: 44px;
+        }
+
+        .manage-btn {
+            position: fixed;
+            top: 30px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            font-size: 18px;
+            backdrop-filter: blur(10px);
+            min-width: 44px;
+            min-height: 44px;
+        }
+
+        .word-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .word-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            background: #ffffff;
+            color: #333333;
+        }
+
+            .word-item:last-child {
+                border-bottom: none;
+            }
+
+            .word-item:nth-child(even) {
+                background: #f8f9fa;
+            }
+
+        .word-text {
+            flex: 1;
+            font-size: 16px;
+            color: #333333;
+            font-weight: 500;
+        }
+
+        .delete-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            min-width: 40px;
+            box-shadow: 0 2px 4px rgba(255, 71, 87, 0.2);
+        }
+
+            .delete-btn:active {
+                background: #ff3838;
+                transform: scale(0.95);
+            }
+
+        .category-header {
+            font-weight: bold;
+            padding: 15px;
+            background: #e9ecef;
+            cursor: pointer;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #333333;
+            font-size: 16px;
+        }
+
+            .category-header:hover {
+                background: #dee2e6;
+            }
+
+        .category-content {
+            display: none;
+        }
+
+            .category-content.show {
+                display: block;
+            }
+
+        @media (max-width: 480px) {
+            .app-container {
+                padding: 15px;
+                padding-top: 80px;
+            }
+
+            .title {
+                font-size: 20px;
+            }
+
+            .category-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .random-btn {
+                padding: 15px 40px;
+                font-size: 18px;
+            }
+
+            .toggle-btn, .manage-btn {
+                top: 40px;
+                padding: 10px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-btn" onclick="toggleAddWords()">+</button>
+    <button class="manage-btn" onclick="toggleManageWords()">⚙</button>
+<br>
+    <div class="app-container">
+        <div class="add-words-section" id="addWordsSection">
+            <div class="section-title">➕ Добавить новые слова</div>
+
+            <select class="dropdown" id="categorySelect">
+                <option value="noun">Существительные</option>
+                <option value="adjective">Прилагательные</option>
+                <option value="verb">Глаголы</option>
+            </select>
+
+            <textarea class="input-field" id="wordInput"
+                      placeholder="Введите слова через запятую&#10;Например: стол, стул, диван, кровать"></textarea>
+
+            <div class="btn-row">
+                <button class="btn btn-primary" onclick="addWords()">Добавить слова</button>
+                <button class="btn btn-secondary" onclick="clearInput()">Очистить</button>
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="nounCount">24</div>
+                    <div class="stat-label">Существительные</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="adjectiveCount">24</div>
+                    <div class="stat-label">Прилагательные</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="verbCount">24</div>
+                    <div class="stat-label">Глаголы</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="manage-words-section" id="manageWordsSection">
+            <div class="section-title">🗑️ Удаление слов</div>
+
+            <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; padding: 10px; margin-bottom: 15px; font-size: 14px;">
+                💡 <strong>Нажмите на категорию чтобы увидеть слова.</strong> Красная кнопка удаляет слово навсегда.
+            </div>
+
+            <div class="word-list">
+                <div class="category-header" onclick="toggleCategory('noun')">
+                    <span>📝 Существительные (<span id="nounCountManage">0</span>)</span>
+                    <span>▼</span>
+                </div>
+                <div class="category-content" id="nounList"></div>
+
+                <div class="category-header" onclick="toggleCategory('adjective')">
+                    <span>🎨 Прилагательные (<span id="adjectiveCountManage">0</span>)</span>
+                    <span>▼</span>
+                </div>
+                <div class="category-content" id="adjectiveList"></div>
+
+                <div class="category-header" onclick="toggleCategory('verb')">
+                    <span>⚡ Глаголы (<span id="verbCountManage">0</span>)</span>
+                    <span>▼</span>
+                </div>
+                <div class="category-content" id="verbList"></div>
+            </div>
+        </div>
+
+        <div class="category-buttons">
+            <button class="category-btn" data-category="noun">Существительное</button>
+            <button class="category-btn" data-category="adjective">Прилагательное</button>
+            <button class="category-btn" data-category="verb">Глагол</button>
+            <button class="category-btn active" data-category="all">Все</button>
+        </div>
+
+        <button class="random-btn" onclick="generateRandomWord()">Рандом</button>
+
+        <div class="output" id="output">
+            Выберите категорию и нажмите "Рандом"
+        </div>
+    </div>
+
+    <script>
+        // Данные приложения
+        let words = {
+            noun: ['стол', 'дом', 'кот', 'собака', 'машина', 'книга', 'телефон', 'компьютер', 'окно', 'дверь', 'стул', 'лампа', 'сумка', 'ручка', 'бумага', 'вода', 'хлеб', 'молоко', 'время', 'работа', 'друг', 'семья', 'город', 'страна'],
+            adjective: ['большой', 'маленький', 'красивый', 'умный', 'быстрый', 'медленный', 'новый', 'старый', 'хороший', 'плохой', 'белый', 'черный', 'красный', 'синий', 'зеленый', 'желтый', 'горячий', 'холодный', 'высокий', 'низкий', 'длинный', 'короткий', 'широкий', 'узкий'],
+            verb: ['идти', 'бежать', 'читать', 'писать', 'говорить', 'слушать', 'смотреть', 'думать', 'работать', 'играть', 'спать', 'есть', 'пить', 'покупать', 'продавать', 'учить', 'танцевать', 'петь', 'рисовать', 'готовить', 'убирать', 'мыть', 'строить', 'ремонтировать']
+        };
+
+        let selectedCategory = 'all';
+
+        // Загрузка данных из localStorage
+        function loadData() {
+            try {
+                const saved = localStorage.getItem('wordGeneratorData');
+                if (saved) {
+                    const parsedData = JSON.parse(saved);
+                    if (parsedData.noun && parsedData.adjective && parsedData.verb) {
+                        words = parsedData;
+                    }
+                }
+            } catch (error) {
+                console.log('Ошибка загрузки данных:', error);
+            }
+            updateStats();
+        }
+
+        // Сохранение данных в localStorage
+        function saveData() {
+            try {
+                localStorage.setItem('wordGeneratorData', JSON.stringify(words));
+                updateStats();
+            } catch (error) {
+                console.log('Ошибка сохранения:', error);
+            }
+        }
+
+        // Обновление статистики и интерфейса
+        function updateStats() {
+            // Обновляем счетчики в панели добавления
+            document.getElementById('nounCount').textContent = words.noun.length;
+            document.getElementById('adjectiveCount').textContent = words.adjective.length;
+            document.getElementById('verbCount').textContent = words.verb.length;
+
+            // Обновляем счетчики в панели управления
+            document.getElementById('nounCountManage').textContent = words.noun.length;
+            document.getElementById('adjectiveCountManage').textContent = words.adjective.length;
+            document.getElementById('verbCountManage').textContent = words.verb.length;
+
+            // Обновляем списки слов
+            updateWordLists();
+        }
+
+        // Обновление списков слов в панели управления
+        function updateWordLists() {
+            updateCategoryList('noun', 'nounList');
+            updateCategoryList('adjective', 'adjectiveList');
+            updateCategoryList('verb', 'verbList');
+        }
+
+        function updateCategoryList(category, listId) {
+            const listElement = document.getElementById(listId);
+            listElement.innerHTML = '';
+
+            if (words[category].length === 0) {
+                const emptyItem = document.createElement('div');
+                emptyItem.className = 'word-item';
+                emptyItem.innerHTML = `
+                    <span class="word-text" style="font-style: italic; color: #999;">Нет слов в этой категории</span>
+                `;
+                listElement.appendChild(emptyItem);
+            } else {
+                words[category].forEach(word => {
+                    const wordItem = document.createElement('div');
+                    wordItem.className = 'word-item';
+                    wordItem.innerHTML = `
+                        <span class="word-text">${word}</span>
+                        <button class="delete-btn" onclick="deleteWord('${category}', '${word}')">✕</button>
+                    `;
+                    listElement.appendChild(wordItem);
+                });
+            }
+        }
+
+        // Переключение панели добавления слов
+        function toggleAddWords() {
+            const addSection = document.getElementById('addWordsSection');
+            const manageSection = document.getElementById('manageWordsSection');
+            const btn = document.querySelector('.toggle-btn');
+
+            if (addSection.classList.contains('show')) {
+                addSection.classList.remove('show');
+                btn.textContent = '+';
+            } else {
+                addSection.classList.add('show');
+                manageSection.classList.remove('show');
+                btn.textContent = '×';
+                document.querySelector('.manage-btn').textContent = '⚙';
+            }
+        }
+
+        // Переключение панели управления словами
+        function toggleManageWords() {
+            const addSection = document.getElementById('addWordsSection');
+            const manageSection = document.getElementById('manageWordsSection');
+            const btn = document.querySelector('.manage-btn');
+
+            if (manageSection.classList.contains('show')) {
+                manageSection.classList.remove('show');
+                btn.textContent = '⚙';
+            } else {
+                manageSection.classList.add('show');
+                addSection.classList.remove('show');
+                btn.textContent = '×';
+                document.querySelector('.toggle-btn').textContent = '+';
+                updateWordLists(); // Обновляем списки при открытии
+            }
+        }
+
+        // Переключение видимости категории
+        function toggleCategory(category) {
+            const content = document.getElementById(category + 'List');
+            const header = content.previousElementSibling;
+            const arrow = header.querySelector('span:last-child');
+
+            if (content.classList.contains('show')) {
+                content.classList.remove('show');
+                arrow.textContent = '▼';
+            } else {
+                content.classList.add('show');
+                arrow.textContent = '▲';
+            }
+        }
+
+        // Добавление новых слов
+        function addWords() {
+            const input = document.getElementById('wordInput').value.trim();
+            const category = document.getElementById('categorySelect').value;
+
+            if (!input) return;
+
+            const newWords = input.split(',')
+                .map(word => word.trim())
+                .filter(word => word.length > 0)
+                .filter(word => !words[category].includes(word));
+
+            if (newWords.length > 0) {
+                words[category].push(...newWords);
+                saveData(); // Автоматически обновляет интерфейс
+                clearInput();
+
+                showNotification(`✅ Добавлено ${newWords.length} слов!`, '#4CAF50');
+            } else {
+                showNotification('⚠️ Нет новых слов для добавления', '#FF9800');
+            }
+        }
+
+        // Очистка поля ввода
+        function clearInput() {
+            document.getElementById('wordInput').value = '';
+        }
+
+        // Генерация случайного слова
+        function generateRandomWord() {
+            let wordArray = [];
+
+            switch(selectedCategory) {
+                case 'noun':
+                    wordArray = words.noun;
+                    break;
+                case 'adjective':
+                    wordArray = words.adjective;
+                    break;
+                case 'verb':
+                    wordArray = words.verb;
+                    break;
+                case 'all':
+                    wordArray = [...words.noun, ...words.adjective, ...words.verb];
+                    break;
+            }
+
+            if (wordArray.length > 0) {
+                const randomIndex = Math.floor(Math.random() * wordArray.length);
+                const randomWord = wordArray[randomIndex];
+
+                const outputElement = document.getElementById('output');
+                outputElement.textContent = randomWord;
+
+                // Анимация
+                outputElement.classList.add('highlight');
+                setTimeout(() => {
+                    outputElement.classList.remove('highlight');
+                }, 500);
+            } else {
+                showNotification('❌ Нет слов в выбранной категории', '#ff4757');
+            }
+        }
+
+        // Удаление слова - УПРОЩЕННАЯ ВЕРСИЯ
+        function deleteWord(category, word) {
+            // Находим и удаляем слово
+            const wordIndex = words[category].indexOf(word);
+            if (wordIndex !== -1) {
+                words[category].splice(wordIndex, 1);
+                saveData(); // Автоматически обновляет интерфейс включая счетчики
+                showNotification(`❌ Слово "${word}" удалено`, '#ff4757');
+            }
+        }
+
+        // Показ уведомлений
+        function showNotification(message, color) {
+            const output = document.getElementById('output');
+            const oldText = output.textContent;
+            const oldBackground = output.style.background;
+            const oldColor = output.style.color;
+
+            output.textContent = message;
+            output.style.background = color;
+            output.style.color = 'white';
+
+            setTimeout(() => {
+                output.textContent = oldText;
+                output.style.background = oldBackground;
+                output.style.color = oldColor;
+            }, 2000);
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+
+            // Обработчики кнопок категорий
+            document.querySelectorAll('.category-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('.category-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+
+                    this.classList.add('active');
+                    selectedCategory = this.dataset.category;
+                });
+            });
+
+            // Показать подсказку по установке на iOS
+            if (navigator.userAgent.includes('iPhone') || navigator.userAgent.includes('iPad')) {
+                document.getElementById('installHint').classList.add('show');
+            }
+
+            // Регистрация Service Worker для PWA
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZXZlbnQgPT4geyBldmVudC53YWl0VW50aWwoc2VsZi5za2lwV2FpdGluZygpKTsgfSk7');
+            }
+
+            // Автосохранение при закрытии
+            window.addEventListener('beforeunload', function() {
+                saveData();
+            });
+        });
+    </script>
+</body>
+</html>
